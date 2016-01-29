@@ -1,30 +1,63 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
     <title><?php echo $this->config->item('project_name'); ?></title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <meta name="author" content="peasant" />
+    <link rel="stylesheet" type="text/css" href="/public/green/css/style.css" />
+    <!--[if lt IE 9]>
+    <script src="/public/green/js/html5.js"></script>
+    <![endif]-->
+    <script src="/public/green/js/jquery.js"></script>
+    <script src="/public/green/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script>
+        (function($){
+            $(window).load(function(){
 
-    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+                $("a[rel='load-content']").click(function(e){
+                    e.preventDefault();
+                    var url=$(this).attr("href");
+                    $.get(url,function(data){
+                        $(".content .mCSB_container").append(data); //load new content inside .mCSB_container
+                        //scroll-to appended content
+                        $(".content").mCustomScrollbar("scrollTo","h2:last");
+                    });
+                });
 
-    <script type="text/javascript" src="/public/js/date.js"></script>
+                $(".content").delegate("a[href='top']","click",function(e){
+                    e.preventDefault();
+                    $(".content").mCustomScrollbar("scrollTo",$(this).attr("href"));
+                });
+
+            });
+        })(jQuery);
+    </script>
 </head>
-
 <body>
-
-<div class="top"> <img class="logo" src="<?php $logo = $this->config->item('project_logo'); echo $logo['admin']?>">
+<header>
+    <h1><img src="<?php $logo = $this->config->item('project_logo'); echo $logo['admin']?>"/></h1>
+    <ul class="rt_nav">
+        <li><a href="http://www.baidu.com" target="_blank" class="website_icon">站点首页</a></li>
+        <li><a href="#" class="admin_icon">DeathGhost</a></li>
+        <li><a href="#" class="set_icon">账号设置</a></li>
+        <li><a href="login.php" class="quit_icon">安全退出</a></li>
+    </ul>
+</header>
+<!--
+<div class="top"> <img class="logo" src="<?php /*$logo = $this->config->item('project_logo'); echo $logo['admin']*/?>">
     <div class="tab1" id="tab1">
         <div class="menu">
 
             <ul class="nav">
-                <li id="one0" onclick="setTab('one',6)"><a href="#"><img src="/public/images/1430958346122214_06.png">
+                <li id="one0" onclick="setTab('one',6)"><a href="#"><img src="/public/BLUE/images/1430958346122214_06.png">
                         <p>回到首页</p>
                     </a></li>
-                <?php $list =  $this->config->item('admin_menu'); foreach($list as $key=>$value):?>
-                <li><a href="#"><img src="<?php echo $value['icon'];?>">
-                        <p><?php echo $value['title']; ?></p>
+                <?php /*$list =  $this->config->item('admin_menu'); foreach($list as $key=>$value):*/?>
+                <li><a href="#"><img src="<?php /*echo $value['icon'];*/?>">
+                        <p><?php /*echo $value['title']; */?></p>
                     </a></li>
-                <?php endforeach; ?>
+                <?php /*endforeach; */?>
             </ul>
         </div>
     </div>
@@ -35,4 +68,4 @@
             <p>欢迎页</p>
         </div>
     </div>
-</div>
+</div>-->
