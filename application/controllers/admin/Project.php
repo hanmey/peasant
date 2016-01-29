@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class peasant extends MY_Controller {
+class Project extends MY_Controller {
 
 	public function index()
 	{

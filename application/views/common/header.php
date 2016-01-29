@@ -44,6 +44,10 @@
         <li><a href="login.php" class="quit_icon">安全退出</a></li>
     </ul>
 </header>
+<?php require 'left_menu.php';?>
+<section class="rt_wrap content mCustomScrollbar _mCS_2">
+    <div id="mCSB_2_container" class="mCSB_container" style="position: relative; top: 0px; left: 0px;" dir="ltr">
+<div class="rt_content">
 <!--
 <div class="top"> <img class="logo" src="<?php /*$logo = $this->config->item('project_logo'); echo $logo['admin']*/?>">
     <div class="tab1" id="tab1">

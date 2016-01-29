@@ -52,6 +52,7 @@ class Base_model extends CI_Model
                         }
                 }
             }
+
         return $map;
     }
 
@@ -134,7 +135,7 @@ class Base_model extends CI_Model
         //查询
         $query = $this->db->get();
         //结果
-        $rows = $query->result();
+        $rows = $query->result_array();
         if ($rows) {
             if (is_array($limit) || $limit > 1) {
                 return $rows;
@@ -223,6 +224,7 @@ class Base_model extends CI_Model
         if ($request) {
             $where = array_merge($where, $this->_search());
         }
+
         if (!empty($this->join_table)) {
             foreach ($this->join_table as $table => $join_info) {
                 $this->db->join($table, $join_info['condition'], $join_info['type']);
