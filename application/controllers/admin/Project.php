@@ -3,9 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Project extends MY_Controller {
 
-	public function index()
+	public $subject = "项目管理";
+	public function  __construct()
 	{
-		$template =  'peasant\list';
-		$this->view($template);
+		parent::__construct();
+		$this->load->model('project_model', 'project');
 	}
 }

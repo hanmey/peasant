@@ -3,9 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Lawyer extends MY_Controller {
 
-	public function index()
+	public $subject = "法律援助";
+	public function  __construct()
 	{
-		$template =  'peasant\list';
-		$this->view($template);
+		parent::__construct();
+		$this->load->model('lawyer_model', 'lawyer');
 	}
 }
