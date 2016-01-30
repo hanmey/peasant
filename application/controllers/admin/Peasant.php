@@ -17,7 +17,7 @@ class peasant extends MY_Controller
 
 	public function ilist()
 	{
-		$datalist['list']  		= $this->get_onepage_data($this->peasant);
+		$datalist['list'] = $this->get_onepage_data($this->peasant);
 		$datalist['page_title'] = "农民工列表";
 		$this->view('admin/peasant/list', $datalist);
 	}
@@ -31,15 +31,17 @@ class peasant extends MY_Controller
 		if ($this->input->post()) {
 			$insert_id = $this->insert_post_data($this->peasant);
 			if ($insert_id) {
-
+				$this->view('admin/peasant/add', array('page_title' => "添加工人成功", 'opResult' => 'ok', 'redirectUrl' => '/admin/peasant/ilist'));
 			}
 			else {
-
+				if ($insert_id) {
+					$this->view('admin/peasant/add', array('page_title' => "添加工人成功", 'opResult' => 'error'));
+				}
 			}
 		}
 		else {
 
-			$this->view('admin/peasant/add',array('page_title'=>"添加工人"));
+			$this->view('admin/peasant/add', array('page_title' => "添加工人"));
 		}
 	}
 

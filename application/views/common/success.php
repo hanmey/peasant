@@ -105,7 +105,7 @@ body {
 		<div id="js-alert-head" class="alert-head"></div>
 		<div class="alert-concent">
 			<p>恭喜你操作成功</p>
-			<p>马上为你跳转到<a href="<?php $redirectUrl;?>"><?php echo $requestTitle?></a></p>
+			<p>马上为你跳转到<a href="<?php echo $redirectUrl?:'javascript:history.go(-1);';?>" id="js-redirect-link"><?php echo $requestTitle?></a></p>
 		</div>
 
 	</div>
@@ -125,12 +125,12 @@ body {
 	function alertSet(e) {
 		document.getElementById("js-alert-box").style.display = "block",
 			document.getElementById("js-alert-head").innerHTML = e;
-		var t = 10,
+		var t = 3,
 			n = document.getElementById("js-sec-circle");
 		document.getElementById("js-sec-text").innerHTML = t,
 			setInterval(function() {
 					if (0 == t){
-						location.href="http://www.jq-school.com";
+						document.getElementById('js-redirect-link').click();
 					}else {
 						t -= 1,
 							document.getElementById("js-sec-text").innerHTML = t;
