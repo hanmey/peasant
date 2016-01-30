@@ -136,21 +136,58 @@ abstract class   MY_Controller extends CI_Controller
 			return false;
 	}
 
+	/**
+	 * 列表页
+	 */
+	public function ilist()
+	{
+		$className = $this->router->class;
+		$datalist['list'] = $this->get_onepage_data($this->$className);
+		$datalist['page_title'] = $this->subject . "列表";
+		$this->view('admin/' . $this->router->class . '/list', $datalist);
+	}
+
+	/**
+	 * 新增信息
+	 */
 	public function add()
 	{
-		$this->view('common/form');
-
+		if ($this->input->post()) {
+			$className = $this->router->class;
+			$insert_id = $this->insert_post_data($this->$className);
+			if ($insert_id) {
+				$this->view('admin/' . $this->router->class . '/add', array('page_title' => "添加" . $this->subject . "成功", 'opResult' => 'ok', 'redirectUrl' => '/admin/' . $this->router->class . '/ilist'));
+			}
+			else {
+				if ($insert_id) {
+					$this->view('admin/' . $this->router->class . '/add', array('page_title' => "添加" . $this->subject . "成功", 'opResult' => 'error'));
+				}
+			}
+		}
+		else {
+			$this->view('admin/' . $this->router->class . '/add', array('page_title' => "添加" . $this->subject));
+		}
 	}
 
-
-
-	public function update()
+	/**
+	 * 编辑信息
+	 * @param $id
+	 */
+	public function edit($id)
 	{
-
-	}
-
-	protected function delete()
-	{
-
+		if ($this->input->post()) {
+			//保存
+			$className = $this->router->class;
+			$this->update_post_data_by_id($this->$className, $id);
+			$this->view('admin/' . $this->router->class . '/add', array('page_title' => "资料更新成功", 'opResult' => 'ok', 'redirectUrl' => '/admin/' . $this->router->class . '/ilist'));
+		}
+		else {
+			if ($id) {
+				$className = $this->router->class;
+				$data = $this->$className->get_ond_data(array('id' => $id));
+			}
+			else redirect('/admin/' . $this->router->class . '/add');
+			$this->view('admin/' . $this->router->class . '/add', $data);
+		}
 	}
 }
