@@ -74,23 +74,39 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'peasant',
-	'password' => 'peasant',
-	'database' => 'peasant',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
+	'dsn'          => '',
+	'hostname'     => 'localhost',
+	'username'     => 'peasant',
+	'password'     => 'peasant',
+	'database'     => 'peasant',
+	'dbdriver'     => 'mysqli',
+	'dbprefix'     => '',
+	'pconnect'     => FALSE,
+	'db_debug'     => (ENVIRONMENT !== 'production'),
+	'cache_on'     => FALSE,
+	'cachedir'     => '',
+	'char_set'     => 'utf8',
+	'dbcollat'     => 'utf8_general_ci',
+	'swap_pre'     => '',
+	'encrypt'      => FALSE,
+	'compress'     => FALSE,
+	'stricton'     => FALSE,
+	'failover'     => array(),
 	'save_queries' => TRUE
+);
+
+$db['table_config'] = array(
+	'peasant' =>
+		array('name'        => array('姓名', 'varchar(60)'),
+			  'tel'         => array('电话号码', 'varchar(15)'),
+			  'edu'         => array('学历', 'enum("初中以下","高中","大专","本科","本科以上")'),
+			  'age'         => array('年龄', 'int(3)'),
+			  'sex'         => array('性别', 'enum("男","女")'),
+			  'profession'  => array('工种', 'varchar(255)'),
+			  'working_age' => array('工龄', 'int(2)'),
+			  'address'     => array('地址', 'text'),
+			  'add_time'    => array('创建时间', 'int(11)'),
+			  'level'       => array('级别', 'int(2)')
+
+		),
 );

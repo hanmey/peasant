@@ -13,7 +13,7 @@
         </select>
         <input type="button" value="搜索" class="group_btn fa-search"/>
         <input type="button" value="全部显示" class="group_btn"/>
-        <a class="fr top_rt_btn">添加民工</a>
+        <a class="fr top_rt_btn" href="/admin/peasant/add">添加民工</a>
     </div>
     <table class="table">
         <thead>
