@@ -1,11 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Business extends MY_Controller {
-
-	public function index()
+class Business extends MY_Controller
+{
+	public $subject = "用人单位";
+	public function  __construct()
 	{
-		$template =  'peasant\list';
-		$this->view($template);
+		parent::__construct();
+		$this->load->model('business_model', 'business');
 	}
+
+
+
 }

@@ -1,0 +1,296 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>树形菜单2</title>
+<style type="text/css">
+<!--
+.headtd1 {  background: #00A4E1; border: 2px outset; border-color: #00BBFF #0077FF #0077FF #00BBFF; cursor: hand; font-size: 9pt}
+.headtd2 {  background: #20C1FF; border: 2px outset; border-color: #60D3FF #0077FF #0077FF #60D3FF; cursor: hand; font-size: 9pt}
+.bodytd  {  background: #99CCFF; border: 2px outset; border-color: #B0D8FF #0077FF #0077FF #B0D8FF; font-size: 9pt}
+-->
+</style>
+<script language="JavaScript">
+scores = new Array(20);
+var numTotal=0;NS4 = (document.layers) ? 1 : 0;IE4 = (document.all) ? 1 : 0;ver4 = (NS4 || IE4) ? 1 : 0;
+if (ver4) {    with (document) {        write("<STYLE TYPE='text/css'>");        
+if (NS4) {            write(".parent {position:absolute; visibility:visible}");            
+write(".child {position:absolute; visibility:visible}");           
+ write(".regular {position:absolute; visibility:visible}")       
+  }       
+  else {            write(".child {display:none}")        }       
+   write("</STYLE>");    }}function getIndex(el) 
+   {    ind = null;    for (i=0; i<document.layers.length; i++) {        whichEl = document.layers[i];      
+     if (whichEl.id == el) {            ind = i;           
+   break;        }    }    return ind;}function arrange() {    nextY = document.layers[firstInd].pageY +document.layers[firstInd].document.height;    for (i=firstInd+1; i<document.layers.length; i++) {        whichEl = document.layers[i];        
+if (whichEl.visibility != "hide") {            whichEl.pageY = nextY;            nextY += whichEl.document.height;        }    }}function initIt(){    if (!ver4) return;    if (NS4) {        for (i=0; i<document.layers.length; i++) {            whichEl = document.layers[i];            if (whichEl.id.indexOf("Child") != -1) whichEl.visibility = "hide";       }        arrange();    }    else {        divColl = document.all.tags("DIV");        for (i=0; i<divColl.length; i++) {            whichEl = divColl(i);            if (whichEl.className == "child") whichEl.style.display = "none";        }    }}function expandIt(el) {    if (!ver4) return;    if (IE4) {        whichEl1 = eval(el + "Child");        for(i=1;i<=numTotal;i++){            whichEl = eval(scores[i] + "Child");            if(whichEl!=whichEl1) {                whichEl.style.display = "none";            }        }        whichEl1 = eval(el + "Child");        if (whichEl1.style.display == "none") {            whichEl1.style.display = "block";        }        else {            whichEl1.style.display = "none";        }    }    else {        whichEl = eval("document." + el + "Child");        for(i=1;i<=numTotal;i++){            whichEl = eval("document." + scores[i] + "Child");            if(whichEl!=whichEl1) {                whichEl.visibility = "hide";            }        }        if (whichEl.visibility == "hide") {            whichEl.visibility = "show";        }        else {            whichEl.visibility = "hide";        }        arrange();    }}onload = initIt;
+</script>
+<script language="JavaScript">
+<!--
+//该函数在调用过程中只需要在将要点击的单元格内的onclick事件中调用showme函数即可
+//function showme(obj1, obj2)该函数主要为使点击的对象高亮度显示，并调用moveme函数，参数obj1为母体即<div>标签的id，obj2为点击对象本身
+//function moveme(obj)该函数判断单元的移动，并调用相应的函数处理，obj参数为母体
+//function moveup(obj,objtop)该函数使一个单元向上移动，参数obj为母体，objtop为母体的本身最高高度
+//function movedown(obj,objbuttom)该函数使一个单元向下移动，参数obj为母体，objbuttom为母体的本身最低高度
+var headHeight = 22;//每个标题的高度
+var bodyHeight = 160;//母体高度
+var objcount = 6;//项目的个数，要改变了项目的个数别忘了该这个东西
+var step = 6;//移动速度(请确认可以被'bodyHeight-headHeight'整除,当前的设定可选速度为1,2,3,6,23,138)
+var moving = false;//是否有移动的项目
+function showme(obj1, obj2)
+{
+ //以下循环为改变标题的背景颜色
+ if (moving)
+  return;
+ moving = true;
+ for(i=0;i<document.all.tags("td").length;i++)
+  if (document.all.tags("td")[i].className.indexOf('headtd') == 0)
+   document.all.tags("td")[i].className = 'headtd1';
+ obj2.className = 'headtd2';
+ moveme(obj1);
+}
+function moveme(obj)
+{
+ idnumber = parseInt(obj.id.substr(4));
+ objtop = headHeight * (idnumber - 1);
+ objbuttom = bodyHeight + headHeight * (idnumber - 2);
+ currenttop = parseInt(obj.style.top);
+ if (currenttop >= objbuttom)
+ {
+  //检验出每一个应该向上移动的层
+  countid = 1;
+  for(i=0;i<document.all.tags("div").length;i++)
+   if (document.all.tags("div")[i].id == 'item'+countid+'body')
+   {
+    obj = document.all.tags("div")[i];
+    objtop = headHeight * (countid - 1);
+    if (countid == idnumber)
+    {
+     moveup(obj,objtop,false);
+     break;
+    }
+    else
+     moveup(obj,objtop,true);
+    countid++;
+   }
+ }
+ else if ((currenttop <= objtop)   &&   (idnumber < objcount))
+ {
+  //检验出每一个应该向下移动的层
+  idnumber++;
+  countid = objcount;
+  for(i=document.all.tags("div").length-1;i>=0;i--)
+   if (document.all.tags("div")[i].id == 'item'+countid+'body')
+   {
+    obj = document.all.tags("div")[i];
+    objbuttom = bodyHeight + headHeight * (countid - 2);
+    if (countid == idnumber)
+    {
+     movedown(obj,objbuttom,false);
+     break;
+    }
+    else
+     movedown(obj,objbuttom,true);
+    countid--;
+   }
+ }
+}
+function moveup(obj,objtop,ismove)
+{
+ currenttop = parseInt(obj.style.top);
+ if (currenttop > objtop)
+ {
+  obj.style.top = currenttop - step;
+  setTimeout('moveup('+obj.id+','+objtop+','+ismove+')',1)
+  return;
+ }
+ moving = ismove;
+}
+function movedown(obj,objbuttom,ismove)
+{
+ currenttop = parseInt(obj.style.top);
+ if (currenttop < objbuttom)
+ {
+  obj.style.top = currenttop + step;
+  setTimeout('movedown('+obj.id+','+objbuttom+','+ismove+')',1)
+  return;
+ }
+ moving = ismove;
+}
+// -->
+</script>
+</head>
+<body>
+<!--改改这个div（mainboard）的height，加一个项目当然要把它的值加22了，减一个项目当然就是减22了//-->
+<div id="mainboard" style="position:absolute; left:2px; top:2px; width:120px; height:270px; z-index:3; overflow: hidden; background: #0099FF;" onClick="">
+  <div id="item1body" style="position:absolute; left:0; top:0; width:120px; height:160px; z-index:1; overflow: hidden">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item1head" height="20" class="headtd2" onClick="showme(item1body,this)">
+          <div align="center">工作室</div>
+        </td>
+    </tr>
+    <tr>
+        <td class="bodytd">
+         <div id='KB1Parent' >
+<a href="#" onClick="expandIt('KB1');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类一</a></div>
+<div id='KB1Child' >
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a>
+</div>
+<div id='KB2Parent' >
+<a href="#" onClick="expandIt('KB2');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类二</a></div>
+<div id='KB2Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a></div>
+<div id='KB3Parent' ><a href="#" onClick="expandIt('KB3');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类三</a></div><div id='KB3Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0003</a></div>
+<div id='KB4Parent' ><a href="#" onClick="expandIt('KB4');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类四</a></div><div id='KB4Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0003</a></div>
+<div id='KB5Parent' >
+<a href="#" onClick="expandIt('KB5'); return false">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类五</a></div><div id='KB5Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a></div>
+<div id='KB6Parent' ><a href="#" onClick="expandIt('KB6'); return false">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类六</a></div><div id='KB6Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a></div>
+        </td>
+    </tr>
+  </table>
+  </div>
+  <div id="item2body" style="position:absolute; left:0px; top:160; width:120; height:160; z-index:2; overflow: hidden">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item2head" height="20" class="headtd1" onClick="showme(item2body,this)">
+          <div align="center">邮箱</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bodytd">
+         <div id='KB7Parent' >
+<a href="#" onClick="expandIt('KB7');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类一</a></div>
+<div id='KB7Child' >
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a>
+</div>
+<div id='KB8Parent' >
+<a href="#" onClick="expandIt('KB8');">
+<IMG SRC='http://img.alixixi.com/icon_indextool.gif' BORDER=0>分类二</a></div>
+<div id='KB8Child' class='child'>
+<a href='time1.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0001</a>
+<a href='time2.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif' BORDER=0>0002</a>
+<a href='time8.htm' target='_target'> <IMG SRC='http://img.alixixi.com/li01.gif'  BORDER=0>0003</a></div>
+<SCRIPT>
+numTotal=8;
+scores[1]='KB1';
+scores[2]='KB2';
+scores[3]='KB3';
+scores[4]='KB4';
+scores[5]='KB5';
+scores[6]='KB6';
+scores[7]='KB7';
+scores[8]='KB8'
+</SCRIPT>
+        </td>
+      </tr>
+    </table>
+    <p class="headtd1"> </p>
+  </div>
+  <div id="item3body" style="position:absolute; left:0; top:182; width:120px; height:160; z-index:3">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item3head" height="20" class="headtd1" onClick="showme(item3body,this)">
+          <div align="center">Q  Q</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bodytd">
+          <div align="center">37146743</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="item4body" style="position:absolute; left:0; top:204; width:120px; height:160; z-index:4; overflow: hidden">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item4head" height="20" class="headtd1" onClick="showme(item4body,this)">
+          <div align="center">朋友</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bodytd">
+          <div align="center">
+            <p>小一、旁腾
+            </p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="item5body" style="position:absolute; left:0; top:226; width:120px; height:160; z-index:4; overflow: hidden">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item5head" height="20" class="headtd1" onClick="showme(item5body,this)">
+          <div align="center">陌生人</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bodytd">
+          <div align="center">
+            <p>小虎
+              AAP
+              
+              小伙伴
+              小一</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!--如果要添加一个子项目请拷贝一份下面的代码并放于后面。干什么，不要拷贝我了，是下面的//-->
+  <div id="item6body" style="position:absolute; left:0; top:248; width:120px; height:160; z-index:4; overflow: hidden">
+    <table width="100%" border="0" height="100%" cellpadding="2" cellspacing="0">
+      <tr>
+        <td id="item6head" height="20" class="headtd1" onClick="showme(item6body,this)">
+          <div align="center">版本号</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bodytd">
+          <div align="center">
+            <p>版本号：1.1
+              
+              封锁了移动过
+              程中的点击事件
+              这样不会出现抖
+              动现象了。
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!--哎哎，别往下拷贝了，到我得上面为止了，拷贝到代码放到我后面吧
+    哦，对了别忘了改几个id呀，div的id，td的id，还有onclick事件中的对象id
+    id的规则是div中item＋数字＋body。td中item＋数字＋head
+    还有div的style中的top值呀，是多少，上面这个div的top加上22就是了
+    别忘了按照body下的提示改改mainboard的height呀。还有给教本中的objcount数量改为你现在项目的个数
+    别傻了，快点行动吧，要不赶不上饭点了//-->
+</div>
+</body>
+</html>
+<a href="http://js.alixixi.com/">欢迎访问阿里西西网页特效代码站，js.alixixi.com</a>
