@@ -10,7 +10,7 @@ $config['admin_menu'] = array(
     'peasant_manage' => array(
         'title' => '农民工管理',
         'icon' => '/public/images/14309583461214_06.png',
-        'url' => '/admin/peasant/list',
+        'url' => '/admin/peasant/ilist',
         'children' => array()),
     'bisiness_manage' => array('title' => '用人单位管理', 'icon' => '/public/images/1430958346122214_06.png', 'url' => '/admin/business/ilist',),
     'project_manage' => array('title' => '项目管理', 'icon' => '/public/images/14309583461214_08.png', 'url' => '/admin/projecti/list',),
